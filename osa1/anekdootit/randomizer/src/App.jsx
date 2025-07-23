@@ -1,9 +1,12 @@
 import { useState } from 'react'
 
+// komponentti otsikoille
 const Header = ({ header }) => <h1>{header}</h1>
 
+// komponentti napeille
 const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>
 
+// komponentti anekdooteille
 const Anecdote = ({ anecdotes, index, votes }) => {
   if (votes === 1) {
     return (
@@ -40,21 +43,22 @@ const App = () => {
   // luo uusi tila, jonka aloitustila on tyhjä taulukko
   const[votes, setVotes] = useState(() => new Array(anecdotes.length).fill(0))
 
-  // tallenna tilanpäivitys omaan funktioon
+  // tallenna tilan päivitykset omiin funktioihin
   const handleNextClick = () => {
     const random = Math.floor(Math.random() * anecdotes.length)
     setSelected(random)
   }
-
   const handleVoteClick = () => {
     const copy = [...votes]
     copy[selected] += 1
     setVotes(copy)
   }
 
+  // tallenna otsikot muuttujiin
   const header1 = 'Anecdote of the day'
   const header2 = 'Anecdote with most votes'
 
+  // tallenna eniten äänestetty anekdootti ja sen indeksi
   const mostVotes = Math.max(...votes)
   const mostVoted = votes.indexOf(mostVotes)
 
