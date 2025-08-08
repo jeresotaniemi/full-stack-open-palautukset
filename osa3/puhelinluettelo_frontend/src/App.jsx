@@ -75,10 +75,14 @@ const App = () => {
 
     personService
       .create(infoObject)
-      .then(returnedNote => {
-        setPersons(persons.concat(returnedNote))
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
         setNewName('')
         setNewNumber('')
+      })
+      .catch(error => {
+        console.log(error.response.data)
+        setNotification({ message: error.response.data.error, type: 'error' })
       })
 
     setNotification({ message: `Added ${newName} to the phonebook`, type: 'success' })
