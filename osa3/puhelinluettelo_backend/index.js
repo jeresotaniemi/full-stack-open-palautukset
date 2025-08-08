@@ -5,8 +5,8 @@ const Person = require('./models/person')
 const app = express()
 
 const morgan = require('morgan')
-morgan.token('body', (request, response) => {
-    return JSON.stringify(request.body)
+morgan.token('body', (request) => {
+  return JSON.stringify(request.body)
 })
 
 const errorHandler = (error, request, response, next) => {
@@ -30,76 +30,76 @@ app.get('/', (request, response) => {
 })
 
 app.get('/api/persons', (request, response) => {
-    Person.find({}).then(persons => {
-        response.json(persons)
-    })
+  Person.find({}).then(persons => {
+    response.json(persons)
+  })
 })
 
 app.get('/info', (request, response) => {
-    const date = new Date()
-    Person.countDocuments({}).then(count => {
-        const info = `<p>Phonebook has info for ${count} people</p>
+  const date = new Date()
+  Person.countDocuments({}).then(count => {
+    const info = `<p>Phonebook has info for ${count} people</p>
                       <p>${date}</p>`
-        response.send(info)
-    })
+    response.send(info)
+  })
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
-    Person.findById(request.params.id).then(person => {
-        if (person) {
-            response.json(person)
-        } else {
-            response.status(404).end()  
-        }
-    })
+  Person.findById(request.params.id).then(person => {
+    if (person) {
+      response.json(person)
+    } else {
+      response.status(404).end()
+    }
+  })
     .catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
-    Person.findByIdAndDelete(request.params.id)
-        .then(result => {
-            if (result) {
-                response.status(204).end()
-            }
-        })
-        .catch(error => next(error))
-})
-
-app.post('/api/persons', (request, response, next) => {
-    const body = request.body
-
-    const person =  new Person({
-        name: body.name,
-        number: body.number
-    })
-
-    person.save().then(savedPerson => {
-        response.json(savedPerson)
+  Person.findByIdAndDelete(request.params.id)
+    .then(result => {
+      if (result) {
+        response.status(204).end()
+      }
     })
     .catch(error => next(error))
 })
 
+app.post('/api/persons', (request, response, next) => {
+  const body = request.body
+
+  const person =  new Person({
+    name: body.name,
+    number: body.number
+  })
+
+  person.save().then(savedPerson => {
+    response.json(savedPerson)
+  })
+    .catch(error => next(error))
+})
+
 app.put('/api/persons/:id', (request, response, next) => {
-    const { name, number } = request.body
+  const { name, number } = request.body
 
-    Person.findById(request.params.id)
-        .then(person => {
-            if (!person) {
-                return response.status(404).end()
-            }
-        
-            person.name = name,
-            person.number = number
+  Person.findById(request.params.id)
+    .then(person => {
+      if (!person) {
+        return response.status(404).end()
+      }
 
-            return person.save().then((updatedPerson) => {
-                response.json(updatedPerson)
-            })
-        })
-        .catch(error => next(error))
+      person.name = name,
+      person.number = number
+
+      return person.save().then((updatedPerson) => {
+        response.json(updatedPerson)
+      })
+    })
+    .catch(error => next(error))
 })
 
 const unknownEndpoint = (request, response) => {
-    response.status(404).send({ error: 'unknown endpoint' })
+  response.status(404).send({ error: 'unknown endpoint' })
 }
 
 app.use(unknownEndpoint)
