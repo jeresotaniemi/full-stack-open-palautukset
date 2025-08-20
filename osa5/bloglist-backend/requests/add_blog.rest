@@ -1,0 +1,10 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkplcnBwYTIxIiwiaWQiOiI2ODljOWFkNjllZDdkZWMwZmYzNjVjOWIiLCJpYXQiOjE3NTUxMDI1NTN9.MXneIWRe4Be4XhwxVmgjgsZwXEV-NPBfT9LispbR2_4
+
+{
+  "title": "The Greatest Blog Ever",
+  "author": "Example author",
+  "url": "https://example.com/",
+  "likes" : 12
+}
