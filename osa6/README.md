@@ -1,0 +1,1 @@
+Osan 6 tehtävien koodi
